@@ -191,14 +191,14 @@ namespace FutbolBack.Migrations
                             Id = 1,
                             EquipoLocal = "Barcelona",
                             EquipoVisitante = "Real Madrid",
-                            Fecha = new DateTime(2024, 9, 17, 23, 18, 23, 911, DateTimeKind.Local).AddTicks(7119)
+                            Fecha = new DateTime(2024, 10, 15, 14, 21, 58, 659, DateTimeKind.Local).AddTicks(1326)
                         },
                         new
                         {
                             Id = 2,
                             EquipoLocal = "PSG",
                             EquipoVisitante = "Manchester City",
-                            Fecha = new DateTime(2024, 9, 22, 23, 18, 23, 911, DateTimeKind.Local).AddTicks(7158)
+                            Fecha = new DateTime(2024, 10, 20, 14, 21, 58, 659, DateTimeKind.Local).AddTicks(1364)
                         });
                 });
 #pragma warning restore 612, 618

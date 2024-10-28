@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FutbolBack.Migrations
 {
     /// <inheritdoc />
-    public partial class InicioDelProyecto : Migration
+    public partial class nuevaMigracion : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -144,8 +144,8 @@ namespace FutbolBack.Migrations
                 columns: new[] { "Id", "EquipoLocal", "EquipoVisitante", "Fecha" },
                 values: new object[,]
                 {
-                    { 1, "Barcelona", "Real Madrid", new DateTime(2024, 9, 17, 23, 18, 23, 911, DateTimeKind.Local).AddTicks(7119) },
-                    { 2, "PSG", "Manchester City", new DateTime(2024, 9, 22, 23, 18, 23, 911, DateTimeKind.Local).AddTicks(7158) }
+                    { 1, "Barcelona", "Real Madrid", new DateTime(2024, 10, 15, 14, 21, 58, 659, DateTimeKind.Local).AddTicks(1326) },
+                    { 2, "PSG", "Manchester City", new DateTime(2024, 10, 20, 14, 21, 58, 659, DateTimeKind.Local).AddTicks(1364) }
                 });
         }
 

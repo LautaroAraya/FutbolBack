@@ -12,47 +12,47 @@ namespace FutbolBack.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EntrenadoresController : ControllerBase
+    public class PartidoesController : ControllerBase
     {
         private readonly FutbolDbContext _context;
 
-        public EntrenadoresController(FutbolDbContext context)
+        public PartidoesController(FutbolDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Entrenadores
+        // GET: api/Partidoes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Entrenador>>> GetEntrenadores()
+        public async Task<ActionResult<IEnumerable<Partido>>> GetPartidos()
         {
-            return await _context.Entrenadores.ToListAsync();
+            return await _context.Partidos.ToListAsync();
         }
 
-        // GET: api/Entrenadores/5
+        // GET: api/Partidoes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Entrenador>> GetEntrenador(int id)
+        public async Task<ActionResult<Partido>> GetPartido(int id)
         {
-            var entrenador = await _context.Entrenadores.FindAsync(id);
+            var partido = await _context.Partidos.FindAsync(id);
 
-            if (entrenador == null)
+            if (partido == null)
             {
                 return NotFound();
             }
 
-            return entrenador;
+            return partido;
         }
 
-        // PUT: api/Entrenadores/5
+        // PUT: api/Partidoes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEntrenador(int id, Entrenador entrenador)
+        public async Task<IActionResult> PutPartido(int id, Partido partido)
         {
-            if (id != entrenador.Id)
+            if (id != partido.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(entrenador).State = EntityState.Modified;
+            _context.Entry(partido).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace FutbolBack.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EntrenadorExists(id))
+                if (!PartidoExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace FutbolBack.Controllers
             return NoContent();
         }
 
-        // POST: api/Entrenadores
+        // POST: api/Partidoes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Entrenador>> PostEntrenador(Entrenador entrenador)
+        public async Task<ActionResult<Partido>> PostPartido(Partido partido)
         {
-            _context.Entrenadores.Add(entrenador);
+            _context.Partidos.Add(partido);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEntrenador", new { id = entrenador.Id }, entrenador);
+            return CreatedAtAction("GetPartido", new { id = partido.Id }, partido);
         }
 
-        // DELETE: api/Entrenadores/5
+        // DELETE: api/Partidoes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEntrenador(int id)
+        public async Task<IActionResult> DeletePartido(int id)
         {
-            var entrenador = await _context.Entrenadores.FindAsync(id);
-            if (entrenador == null)
+            var partido = await _context.Partidos.FindAsync(id);
+            if (partido == null)
             {
                 return NotFound();
             }
 
-            _context.Entrenadores.Remove(entrenador);
+            _context.Partidos.Remove(partido);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool EntrenadorExists(int id)
+        private bool PartidoExists(int id)
         {
-            return _context.Entrenadores.Any(e => e.Id == id);
+            return _context.Partidos.Any(e => e.Id == id);
         }
     }
 }

@@ -17,14 +17,28 @@ namespace FutbolBack.DataContex
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Jugador>().HasData(
-                new Jugador { Id = 1, Nombre = "Lionel Messi", Posicion = "Delantero", Equipo = "PSG" },
-                new Jugador { Id = 2, Nombre = "Cristiano Ronaldo", Posicion = "Delantero", Equipo = "Al-Nassr" }
-            );
+            // Relación uno a uno entre Entrenador y Equipo
+            modelBuilder.Entity<Equipo>()
+                .HasOne(e => e.Entrenador)
+                .WithOne(e => e.Equipo)
+                .HasForeignKey<Entrenador>(e => e.EquipoId);
 
+            // Relación uno a muchos entre Equipo y Partido (equipo local)
+            modelBuilder.Entity<Partido>()
+                .HasOne(p => p.EquipoLocal)
+                .WithMany(e => e.PartidosLocal)
+                .HasForeignKey(p => p.EquipoLocalId);
+
+            // Relación uno a muchos entre Equipo y Partido (equipo visitante)
+            modelBuilder.Entity<Partido>()
+                .HasOne(p => p.EquipoVisitante)
+                .WithMany(e => e.PartidosVisitante)
+                .HasForeignKey(p => p.EquipoVisitanteId);
+
+            // Datos semilla (si lo necesitas)
             modelBuilder.Entity<Entrenador>().HasData(
-                new Entrenador { Id = 1, Nombre = "Pep Guardiola", Equipo = "Manchester City" },
-                new Entrenador { Id = 2, Nombre = "Carlo Ancelotti", Equipo = "Real Madrid" }
+                new Entrenador { Id = 1, Nombre = "Pep Guardiola", EquipoId = 1 },
+                new Entrenador { Id = 2, Nombre = "Carlo Ancelotti", EquipoId = 2 }
             );
 
             modelBuilder.Entity<Equipo>().HasData(
@@ -33,13 +47,8 @@ namespace FutbolBack.DataContex
             );
 
             modelBuilder.Entity<Partido>().HasData(
-                new Partido { Id = 1, EquipoLocal = "Barcelona", EquipoVisitante = "Real Madrid", Fecha = DateTime.Now.AddDays(-10) },
-                new Partido { Id = 2, EquipoLocal = "PSG", EquipoVisitante = "Manchester City", Fecha = DateTime.Now.AddDays(-5) }
-            );
-
-            modelBuilder.Entity<Liga>().HasData(
-                new Liga { Id = 1, Nombre = "La Liga" },
-                new Liga { Id = 2, Nombre = "Premier League" }
+                new Partido { Id = 1, EquipoLocalId = 1, EquipoVisitanteId = 2, Fecha = DateTime.Now.AddDays(-10) },
+                new Partido { Id = 2, EquipoLocalId = 2, EquipoVisitanteId = 1, Fecha = DateTime.Now.AddDays(-5) }
             );
         }
     }

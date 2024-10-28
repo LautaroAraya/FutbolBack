@@ -12,23 +12,23 @@ namespace FutbolBack.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EquiposController : ControllerBase
+    public class EquipoesController : ControllerBase
     {
         private readonly FutbolDbContext _context;
 
-        public EquiposController(FutbolDbContext context)
+        public EquipoesController(FutbolDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Equipos
+        // GET: api/Equipoes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Equipo>>> GetEquipos()
         {
             return await _context.Equipos.ToListAsync();
         }
 
-        // GET: api/Equipos/5
+        // GET: api/Equipoes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Equipo>> GetEquipo(int id)
         {
@@ -42,7 +42,7 @@ namespace FutbolBack.Controllers
             return equipo;
         }
 
-        // PUT: api/Equipos/5
+        // PUT: api/Equipoes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEquipo(int id, Equipo equipo)
@@ -73,7 +73,7 @@ namespace FutbolBack.Controllers
             return NoContent();
         }
 
-        // POST: api/Equipos
+        // POST: api/Equipoes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Equipo>> PostEquipo(Equipo equipo)
@@ -84,7 +84,7 @@ namespace FutbolBack.Controllers
             return CreatedAtAction("GetEquipo", new { id = equipo.Id }, equipo);
         }
 
-        // DELETE: api/Equipos/5
+        // DELETE: api/Equipoes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEquipo(int id)
         {
