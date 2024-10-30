@@ -18,23 +18,6 @@ namespace FutbolBack.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Entrenadores",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nombre = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Equipo = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Entrenadores", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Equipos",
                 columns: table => new
                 {
@@ -86,31 +69,54 @@ namespace FutbolBack.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Entrenadores",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EquipoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Entrenadores", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Entrenadores_Equipos_EquipoId",
+                        column: x => x.EquipoId,
+                        principalTable: "Equipos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Partidos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    EquipoLocal = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    EquipoVisitante = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    EquipoLocalId = table.Column<int>(type: "int", nullable: false),
+                    EquipoVisitanteId = table.Column<int>(type: "int", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Partidos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Partidos_Equipos_EquipoLocalId",
+                        column: x => x.EquipoLocalId,
+                        principalTable: "Equipos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Partidos_Equipos_EquipoVisitanteId",
+                        column: x => x.EquipoVisitanteId,
+                        principalTable: "Equipos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.InsertData(
-                table: "Entrenadores",
-                columns: new[] { "Id", "Equipo", "Nombre" },
-                values: new object[,]
-                {
-                    { 1, "Manchester City", "Pep Guardiola" },
-                    { 2, "Real Madrid", "Carlo Ancelotti" }
-                });
 
             migrationBuilder.InsertData(
                 table: "Equipos",
@@ -122,31 +128,38 @@ namespace FutbolBack.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Jugadores",
-                columns: new[] { "Id", "Equipo", "Nombre", "Posicion" },
+                table: "Entrenadores",
+                columns: new[] { "Id", "EquipoId", "Nombre" },
                 values: new object[,]
                 {
-                    { 1, "PSG", "Lionel Messi", "Delantero" },
-                    { 2, "Al-Nassr", "Cristiano Ronaldo", "Delantero" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Ligas",
-                columns: new[] { "Id", "Nombre" },
-                values: new object[,]
-                {
-                    { 1, "La Liga" },
-                    { 2, "Premier League" }
+                    { 1, 1, "Pep Guardiola" },
+                    { 2, 2, "Carlo Ancelotti" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Partidos",
-                columns: new[] { "Id", "EquipoLocal", "EquipoVisitante", "Fecha" },
+                columns: new[] { "Id", "EquipoLocalId", "EquipoVisitanteId", "Fecha" },
                 values: new object[,]
                 {
-                    { 1, "Barcelona", "Real Madrid", new DateTime(2024, 10, 15, 14, 21, 58, 659, DateTimeKind.Local).AddTicks(1326) },
-                    { 2, "PSG", "Manchester City", new DateTime(2024, 10, 20, 14, 21, 58, 659, DateTimeKind.Local).AddTicks(1364) }
+                    { 1, 1, 2, new DateTime(2024, 10, 19, 21, 11, 40, 159, DateTimeKind.Local).AddTicks(2801) },
+                    { 2, 2, 1, new DateTime(2024, 10, 24, 21, 11, 40, 159, DateTimeKind.Local).AddTicks(2819) }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Entrenadores_EquipoId",
+                table: "Entrenadores",
+                column: "EquipoId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Partidos_EquipoLocalId",
+                table: "Partidos",
+                column: "EquipoLocalId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Partidos_EquipoVisitanteId",
+                table: "Partidos",
+                column: "EquipoVisitanteId");
         }
 
         /// <inheritdoc />
@@ -156,9 +169,6 @@ namespace FutbolBack.Migrations
                 name: "Entrenadores");
 
             migrationBuilder.DropTable(
-                name: "Equipos");
-
-            migrationBuilder.DropTable(
                 name: "Jugadores");
 
             migrationBuilder.DropTable(
@@ -166,6 +176,9 @@ namespace FutbolBack.Migrations
 
             migrationBuilder.DropTable(
                 name: "Partidos");
+
+            migrationBuilder.DropTable(
+                name: "Equipos");
         }
     }
 }

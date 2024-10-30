@@ -17,7 +17,7 @@ namespace FutbolBack.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -30,9 +30,8 @@ namespace FutbolBack.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Equipo")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("EquipoId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -40,19 +39,22 @@ namespace FutbolBack.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EquipoId")
+                        .IsUnique();
+
                     b.ToTable("Entrenadores");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Equipo = "Manchester City",
+                            EquipoId = 1,
                             Nombre = "Pep Guardiola"
                         },
                         new
                         {
                             Id = 2,
-                            Equipo = "Real Madrid",
+                            EquipoId = 2,
                             Nombre = "Carlo Ancelotti"
                         });
                 });
@@ -115,22 +117,6 @@ namespace FutbolBack.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Jugadores");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Equipo = "PSG",
-                            Nombre = "Lionel Messi",
-                            Posicion = "Delantero"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Equipo = "Al-Nassr",
-                            Nombre = "Cristiano Ronaldo",
-                            Posicion = "Delantero"
-                        });
                 });
 
             modelBuilder.Entity("FutbolBack.Modelos.Liga", b =>
@@ -148,18 +134,6 @@ namespace FutbolBack.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ligas");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Nombre = "La Liga"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Nombre = "Premier League"
-                        });
                 });
 
             modelBuilder.Entity("FutbolBack.Modelos.Partido", b =>
@@ -170,18 +144,20 @@ namespace FutbolBack.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("EquipoLocal")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("EquipoLocalId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("EquipoVisitante")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("EquipoVisitanteId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EquipoLocalId");
+
+                    b.HasIndex("EquipoVisitanteId");
 
                     b.ToTable("Partidos");
 
@@ -189,17 +165,56 @@ namespace FutbolBack.Migrations
                         new
                         {
                             Id = 1,
-                            EquipoLocal = "Barcelona",
-                            EquipoVisitante = "Real Madrid",
-                            Fecha = new DateTime(2024, 10, 15, 14, 21, 58, 659, DateTimeKind.Local).AddTicks(1326)
+                            EquipoLocalId = 1,
+                            EquipoVisitanteId = 2,
+                            Fecha = new DateTime(2024, 10, 19, 21, 11, 40, 159, DateTimeKind.Local).AddTicks(2801)
                         },
                         new
                         {
                             Id = 2,
-                            EquipoLocal = "PSG",
-                            EquipoVisitante = "Manchester City",
-                            Fecha = new DateTime(2024, 10, 20, 14, 21, 58, 659, DateTimeKind.Local).AddTicks(1364)
+                            EquipoLocalId = 2,
+                            EquipoVisitanteId = 1,
+                            Fecha = new DateTime(2024, 10, 24, 21, 11, 40, 159, DateTimeKind.Local).AddTicks(2819)
                         });
+                });
+
+            modelBuilder.Entity("FutbolBack.Modelos.Entrenador", b =>
+                {
+                    b.HasOne("FutbolBack.Modelos.Equipo", "Equipo")
+                        .WithOne("Entrenador")
+                        .HasForeignKey("FutbolBack.Modelos.Entrenador", "EquipoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipo");
+                });
+
+            modelBuilder.Entity("FutbolBack.Modelos.Partido", b =>
+                {
+                    b.HasOne("FutbolBack.Modelos.Equipo", "EquipoLocal")
+                        .WithMany("PartidosLocal")
+                        .HasForeignKey("EquipoLocalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FutbolBack.Modelos.Equipo", "EquipoVisitante")
+                        .WithMany("PartidosVisitante")
+                        .HasForeignKey("EquipoVisitanteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EquipoLocal");
+
+                    b.Navigation("EquipoVisitante");
+                });
+
+            modelBuilder.Entity("FutbolBack.Modelos.Equipo", b =>
+                {
+                    b.Navigation("Entrenador");
+
+                    b.Navigation("PartidosLocal");
+
+                    b.Navigation("PartidosVisitante");
                 });
 #pragma warning restore 612, 618
         }
