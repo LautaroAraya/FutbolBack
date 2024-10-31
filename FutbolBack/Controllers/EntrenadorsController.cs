@@ -78,6 +78,8 @@ namespace FutbolBack.Controllers
         [HttpPost]
         public async Task<ActionResult<Entrenador>> PostEntrenador(Entrenador entrenador)
         {
+            //attach equipo
+            //_context.Attach(entrenador.Equipo);
             _context.Entrenadores.Add(entrenador);
             await _context.SaveChangesAsync();
 

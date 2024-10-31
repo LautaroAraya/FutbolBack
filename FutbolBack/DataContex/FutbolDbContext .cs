@@ -17,11 +17,8 @@ namespace FutbolBack.DataContex
         {
             base.OnModelCreating(modelBuilder);
 
-            // Relación uno a uno entre Entrenador y Equipo
-            modelBuilder.Entity<Equipo>()
-                .HasOne(e => e.Entrenador)
-                .WithOne(e => e.Equipo)
-                .HasForeignKey<Entrenador>(e => e.EquipoId);
+
+
 
             // Relación uno a muchos entre Equipo y Partido (equipo local)
             modelBuilder.Entity<Partido>()
@@ -37,8 +34,8 @@ namespace FutbolBack.DataContex
 
             // Datos semilla (si lo necesitas)
             modelBuilder.Entity<Entrenador>().HasData(
-                new Entrenador { Id = 1, Nombre = "Pep Guardiola", EquipoId = 1 },
-                new Entrenador { Id = 2, Nombre = "Carlo Ancelotti", EquipoId = 2 }
+                new Entrenador { Id = 1, Nombre = "Pep Guardiola" },
+                new Entrenador { Id = 2, Nombre = "Carlo Ancelotti" }
             );
 
             modelBuilder.Entity<Equipo>().HasData(
