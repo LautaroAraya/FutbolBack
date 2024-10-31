@@ -12,6 +12,7 @@ namespace FutbolBack.DataContex
         public DbSet<Equipo> Equipos { get; set; }
         public DbSet<Partido> Partidos { get; set; }
         public DbSet<Liga> Ligas { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +48,7 @@ namespace FutbolBack.DataContex
                 new Partido { Id = 1, EquipoLocalId = 1, EquipoVisitanteId = 2, Fecha = DateTime.Now.AddDays(-10) },
                 new Partido { Id = 2, EquipoLocalId = 2, EquipoVisitanteId = 1, Fecha = DateTime.Now.AddDays(-5) }
             );
+
         }
     }
 }
